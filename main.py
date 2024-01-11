@@ -2,7 +2,7 @@
 import pygame
 
 # local imports
-from player import Player
+from player import Player, Tank, Barrel
 
 
 w = 400
@@ -11,8 +11,13 @@ halfway = h / 2
 
 
 # Group single
-player = pygame.sprite.GroupSingle()
-player.add(Player())
+# player = pygame.sprite.GroupSingle()
+# player.add(Player())
+
+tank = pygame.sprite.GroupSingle()
+tank.add(Tank())
+barrel = pygame.sprite.GroupSingle()
+barrel.add(Barrel())
 
 
 def main():
@@ -33,8 +38,10 @@ def main():
         # Game populates
         screen.fill("black")
 
-        player.draw(screen)
-        player.update()
+        tank.draw(screen)
+        tank.update()
+        barrel.draw(screen)
+        barrel.update()
 
         # Update everything
         pygame.display.update()
