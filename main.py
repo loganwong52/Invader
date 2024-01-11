@@ -14,7 +14,8 @@ halfway = h / 2
 tank = pygame.sprite.GroupSingle()
 tank.add(Tank())
 barrel = pygame.sprite.GroupSingle()
-barrel.add(Barrel())
+the_barrel = Barrel()
+barrel.add(the_barrel)
 
 bullet = pygame.sprite.GroupSingle()
 
@@ -32,7 +33,7 @@ def main():
     bullet_status = "Flying"
     # Timer for bullet
     bullet_timer = pygame.USEREVENT + 1
-    pygame.time.set_timer(bullet_timer, 1500)
+    pygame.time.set_timer(bullet_timer, 1300)
 
     while True:
         for event in pygame.event.get():
@@ -48,7 +49,7 @@ def main():
                 print(bullet_status)
                 if bullet_ready:
                     bullet_status = "cooldown"
-                    bullet.add(Bullet())
+                    bullet.add(Bullet(the_barrel.rect.x, the_barrel.rect.y))
                     bullet_ready = False
 
         # Game populates
