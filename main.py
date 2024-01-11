@@ -6,6 +6,7 @@ from random import randint
 from player import Tank, Barrel
 from bullet import Bullet
 from enemy import Enemy
+from gameover import Gameover
 
 w = 400
 h = 800
@@ -20,6 +21,8 @@ the_barrel = Barrel()
 barrel.add(the_barrel)
 
 bullet = pygame.sprite.GroupSingle()
+gameover_sprite = pygame.sprite.GroupSingle()
+gameover_sprite.add(Gameover())
 
 # Group
 enemy_group = pygame.sprite.Group()
@@ -47,6 +50,17 @@ def collision_sprite():
     # return True
 
 
+def check_gameover():
+    global enemy_group, gameover_sprite
+
+    # print("gameover_sprite: " + str(type(gameover_sprite.sprite)))
+    # print("enemy_group: " + str(type(enemy_group)))
+
+    if pygame.sprite.spritecollide(gameover_sprite.sprite, enemy_group, True):
+        return False
+    return True
+
+
 def main():
     pygame.init()
     # CREATE DISPLAY SURFACE
@@ -67,7 +81,9 @@ def main():
 
     # Timer for enemies
     enemy_timer = pygame.USEREVENT + 2
-    pygame.time.set_timer(enemy_timer, 2500)
+    pygame.time.set_timer(enemy_timer, 1000)
+
+    game_active = True
 
     while True:
         for event in pygame.event.get():
@@ -92,27 +108,41 @@ def main():
                 y = randint(30, h / 2)
                 enemy_group.add(Enemy(x, y))
 
-        # Game populates
-        screen.fill("black")
+        if game_active:
+            # Game populates
+            screen.fill("black")
 
-        tank.draw(screen)
-        tank.update()
-        barrel.draw(screen)
-        barrel.update()
+            tank.draw(screen)
+            tank.update()
+            barrel.draw(screen)
+            barrel.update()
 
-        bullet.draw(screen)
-        bullet.update()
+            bullet.draw(screen)
+            bullet.update()
 
-        enemy_group.draw(screen)
-        enemy_group.update()
+            enemy_group.draw(screen)
+            enemy_group.update()
 
-        if bullet.sprite is not None and enemy_group is not None:
-            collision_sprite()
+            gameover_sprite.draw(screen)
+            gameover_sprite.update()
 
-        # Show instructions if score is 0, otherwise show the score
-        score_msg = font.render(f"Score: {score}", False, "White")
-        score_msg_rect = score_msg.get_rect(topright=(w, 0))
-        screen.blit(score_msg, score_msg_rect)
+            if bullet.sprite is not None and enemy_group is not None:
+                collision_sprite()
+
+            # Show instructions if score is 0, otherwise show the score
+            score_msg = font.render(f"Score: {score}", False, "White")
+            score_msg_rect = score_msg.get_rect(topright=(w, 0))
+            screen.blit(score_msg, score_msg_rect)
+
+            if enemy_group is not None:
+                game_active = check_gameover()
+        else:
+            # You've lost
+            screen.fill("red")
+            # Show final score
+            score_msg = font.render(f"Final Score: {score}", False, "Black")
+            score_msg_rect = score_msg.get_rect(topright=(w / 2, h / 2))
+            screen.blit(score_msg, score_msg_rect)
 
         # Update everything
         pygame.display.update()

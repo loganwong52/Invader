@@ -13,6 +13,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.Surface((40, 30))
         self.image.fill("Red")
         self.rect = self.image.get_rect(center=(x, y))
+        # self.game_over = False
 
     def destroy(self):
         """
@@ -20,6 +21,9 @@ class Enemy(pygame.sprite.Sprite):
         """
         if self.rect.bottom >= h:
             self.kill()
+            # self.game_over = True
 
     def update(self):
         self.rect.y += 1
+
+        self.destroy()
