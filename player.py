@@ -4,13 +4,14 @@ import pygame
 w = 400
 h = 800
 halfway = w / 2
+amount = 5
 
 
 class Tank(pygame.sprite.Sprite):
     def __init__(self):
         super(Tank, self).__init__()
 
-        self.amount = 10
+        self.amount = amount
         self.image = pygame.Surface((60, 40), pygame.SRCALPHA)
         self.image.fill("green")
         self.rect = self.image.get_rect(midbottom=(halfway, h))
@@ -41,7 +42,7 @@ class Barrel(pygame.sprite.Sprite):
     def __init__(self):
         super(Barrel, self).__init__()
 
-        self.amount = 10
+        self.amount = amount
         self.image = pygame.Surface((20, 20), pygame.SRCALPHA)
         self.image.fill("green")
         self.rect = self.image.get_rect(midbottom=(halfway, h - 39))

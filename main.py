@@ -37,8 +37,10 @@ def collision_sprite():
     pass in if the enemy should be deleted or not
     """
     global bullet, enemy_group, score
-    if pygame.sprite.spritecollide(bullet.sprite, enemy_group, True):
-        enemy_group.empty()
+
+    collided_enemy = pygame.sprite.spritecollideany(bullet.sprite, enemy_group)
+    if collided_enemy != None:
+        collided_enemy.kill()
         bullet.empty()
         score += 1
         # return False
@@ -104,7 +106,7 @@ def main():
         enemy_group.draw(screen)
         enemy_group.update()
 
-        if bullet.sprite is not None:
+        if bullet.sprite is not None and enemy_group is not None:
             collision_sprite()
 
         # Show instructions if score is 0, otherwise show the score
