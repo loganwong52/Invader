@@ -4,6 +4,7 @@ import pygame
 # local imports
 from player import Tank, Barrel
 from bullet import Bullet
+from enemy import Enemy
 
 w = 400
 h = 800
@@ -18,6 +19,10 @@ the_barrel = Barrel()
 barrel.add(the_barrel)
 
 bullet = pygame.sprite.GroupSingle()
+
+# Group
+enemy_group = pygame.sprite.Group()
+enemy_group.add(Enemy())
 
 
 def main():
@@ -62,6 +67,9 @@ def main():
 
         bullet.draw(screen)
         bullet.update()
+
+        enemy_group.draw(screen)
+        enemy_group.update()
 
         # Update everything
         pygame.display.update()
