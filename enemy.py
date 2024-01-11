@@ -26,4 +26,4 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         self.rect.y += 1
 
-        self.destroy()
+        # self.destroy()

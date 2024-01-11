@@ -28,9 +28,6 @@ gameover_sprite.add(Gameover())
 enemy_group = pygame.sprite.Group()
 enemy_group.add(Enemy(w / 2, h / 2))
 
-# Player score
-score = 0
-
 
 def collision_sprite():
     """
@@ -38,25 +35,27 @@ def collision_sprite():
     pass in sprite that collides
     pass in Group of sprites that can be collided into
     pass in if the enemy should be deleted or not
+
+    returns 1 to increment the score, or 0 if not
     """
-    global bullet, enemy_group, score
+    global bullet, enemy_group
 
     collided_enemy = pygame.sprite.spritecollideany(bullet.sprite, enemy_group)
     if collided_enemy != None:
         collided_enemy.kill()
         bullet.empty()
-        score += 1
-        # return False
-    # return True
+        return 1
+    return 0
 
 
 def check_gameover():
+    """
+    Checks if an enemy has hit the bottom or not.
+    """
     global enemy_group, gameover_sprite
 
-    # print("gameover_sprite: " + str(type(gameover_sprite.sprite)))
-    # print("enemy_group: " + str(type(enemy_group)))
-
     if pygame.sprite.spritecollide(gameover_sprite.sprite, enemy_group, True):
+        print("game over!")
         return False
     return True
 
@@ -70,6 +69,7 @@ def main():
     # Create the clock object for the framerate
     clock = pygame.time.Clock()
 
+    # Create bullet status helpers
     bullet_ready = True
     bullet_status = "Flying"
     # Timer for bullet
@@ -77,6 +77,7 @@ def main():
     pygame.time.set_timer(bullet_timer, 1300)
 
     # Score
+    score = 0
     font = pygame.font.Font("freesansbold.ttf", 25)
 
     # Timer for enemies
@@ -90,23 +91,32 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-            if event.type == bullet_timer:
-                if not bullet_ready:
-                    bullet_ready = True
-                    bullet_status = "Flying"
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                print(bullet_status)
-                if bullet_ready:
-                    bullet_status = "cooldown"
-                    bullet.add(Bullet(the_barrel.rect.x, the_barrel.rect.y))
-                    bullet_ready = False
+            if game_active:
+                if event.type == bullet_timer:
+                    if not bullet_ready:
+                        bullet_ready = True
+                        bullet_status = "Flying"
 
-            if event.type == enemy_timer:
-                # Spawn a new enemy
-                x = randint(40, w - 40)
-                y = randint(30, h / 2)
-                enemy_group.add(Enemy(x, y))
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    print(bullet_status)
+                    if bullet_ready:
+                        bullet_status = "cooldown"
+                        bullet.add(Bullet(the_barrel.rect.x, the_barrel.rect.y))
+                        bullet_ready = False
+
+                if event.type == enemy_timer:
+                    # Spawn a new enemy
+                    x = randint(40, w - 40)
+                    y = randint(30, h / 2)
+                    enemy_group.add(Enemy(x, y))
+            else:
+                # Space bar resets the game
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    score = 0
+                    enemy_group.empty()
+                    bullet.empty()
+                    game_active = True
 
         if game_active:
             # Game populates
@@ -127,7 +137,7 @@ def main():
             gameover_sprite.update()
 
             if bullet.sprite is not None and enemy_group is not None:
-                collision_sprite()
+                score += collision_sprite()
 
             # Show instructions if score is 0, otherwise show the score
             score_msg = font.render(f"Score: {score}", False, "White")
@@ -141,8 +151,13 @@ def main():
             screen.fill("red")
             # Show final score
             score_msg = font.render(f"Final Score: {score}", False, "Black")
-            score_msg_rect = score_msg.get_rect(topright=(w / 2, h / 2))
+            score_msg_rect = score_msg.get_rect(center=(w / 2, h / 2))
+            # press space to start a new game
+            restart_msg = font.render("Press space to restart", False, "Black")
+            restart_msg_rect = restart_msg.get_rect(center=(w / 2, h / 2 + 50))
+
             screen.blit(score_msg, score_msg_rect)
+            screen.blit(restart_msg, restart_msg_rect)
 
         # Update everything
         pygame.display.update()

@@ -12,8 +12,8 @@ class Gameover(pygame.sprite.Sprite):
         super(Gameover, self).__init__()
 
         self.image = pygame.Surface((w, 10), pygame.SRCALPHA)
-        self.image.fill("pink")
-        self.rect = self.image.get_rect(midtop=(w / 2, h - 5))
+        self.image.fill("black")
+        self.rect = self.image.get_rect(midtop=(w / 2, h))
 
     def update(self):
         pass
