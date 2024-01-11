@@ -1,6 +1,5 @@
 import pygame
 
-
 w = 400
 h = 800
 halfway = w / 2

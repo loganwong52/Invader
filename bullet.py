@@ -1,9 +1,7 @@
 import pygame
 
-
 w = 400
 h = 800
-halfway = w / 2
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -15,21 +13,6 @@ class Bullet(pygame.sprite.Sprite):
         self.image.fill("yellow")
         self.rect = self.image.get_rect(midbottom=(x, y))
 
-    def player_input(self):
-        keys = pygame.key.get_pressed()
-
-        # if keys[pygame.K_LEFT]:
-        #     # self.direction = "left"
-        #     self.rect.x -= self.amount
-        #     if self.rect.left <= 20:
-        #         self.rect.left = 20
-
-        # if keys[pygame.K_RIGHT]:
-        #     # self.direction = "right"
-        #     self.rect.x += self.amount
-        #     if self.rect.right >= w - 20:
-        #         self.rect.right = w - 20
-
     def destroy(self):
         """
         If the sprite goes off screen, destroy it.
@@ -37,7 +20,5 @@ class Bullet(pygame.sprite.Sprite):
         if self.rect.bottom <= 0:
             self.kill()
 
-    def update(self, game_restart=False):
-        self.player_input()
-
+    def update(self):
         self.rect.y -= self.amount

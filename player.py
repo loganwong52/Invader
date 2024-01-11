@@ -1,6 +1,5 @@
 import pygame
 
-
 w = 400
 h = 800
 halfway = w / 2
@@ -31,11 +30,8 @@ class Tank(pygame.sprite.Sprite):
             if self.rect.right >= w:
                 self.rect.right = w
 
-    def update(self, game_restart=False):
+    def update(self):
         self.player_input()
-
-        # if game_restart:
-        #     self.rect.midbottom = (halfway, h)
 
 
 class Barrel(pygame.sprite.Sprite):
@@ -62,5 +58,5 @@ class Barrel(pygame.sprite.Sprite):
             if self.rect.right >= w - 20:
                 self.rect.right = w - 20
 
-    def update(self, game_restart=False):
+    def update(self):
         self.player_input()

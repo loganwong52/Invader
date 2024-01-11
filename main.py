@@ -74,7 +74,7 @@ def main():
     bullet_status = "Flying"
     # Timer for bullet
     bullet_timer = pygame.USEREVENT + 1
-    pygame.time.set_timer(bullet_timer, 1300)
+    pygame.time.set_timer(bullet_timer, 1100)
 
     # Score
     score = 0
@@ -112,7 +112,7 @@ def main():
                     enemy_group.add(Enemy(x, y))
             else:
                 # Space bar resets the game
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                     score = 0
                     enemy_group.empty()
                     bullet.empty()
@@ -153,7 +153,7 @@ def main():
             score_msg = font.render(f"Final Score: {score}", False, "Black")
             score_msg_rect = score_msg.get_rect(center=(w / 2, h / 2))
             # press space to start a new game
-            restart_msg = font.render("Press space to restart", False, "Black")
+            restart_msg = font.render("Press Enter to restart!", False, "Black")
             restart_msg_rect = restart_msg.get_rect(center=(w / 2, h / 2 + 50))
 
             screen.blit(score_msg, score_msg_rect)
