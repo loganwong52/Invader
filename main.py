@@ -25,6 +25,20 @@ enemy_group = pygame.sprite.Group()
 enemy_group.add(Enemy())
 
 
+def collision_sprite():
+    """
+    player is a GroupSingle that is NOT a sprite
+    pass in sprite that collides
+    pass in Group of sprites that can be collided into
+    pass in if the enemy should be deleted or not
+    """
+    if pygame.sprite.spritecollide(bullet.sprite, enemy_group, True):
+        enemy_group.empty()
+        bullet.empty()
+        return False
+    return True
+
+
 def main():
     pygame.init()
     # CREATE DISPLAY SURFACE
@@ -70,6 +84,9 @@ def main():
 
         enemy_group.draw(screen)
         enemy_group.update()
+
+        if bullet.sprite is not None:
+            collision_sprite()
 
         # Update everything
         pygame.display.update()
