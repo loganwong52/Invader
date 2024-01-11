@@ -1,10 +1,18 @@
 # python imports
 import pygame
 
+# local imports
+from player import Player
 
-w = 720
-h = 1280
+
+w = 400
+h = 800
 halfway = h / 2
+
+
+# Group single
+player = pygame.sprite.GroupSingle()
+player.add(Player())
 
 
 def main():
@@ -21,6 +29,12 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
+        # Game populates
+        screen.fill("black")
+
+        player.draw(screen)
+        player.update()
 
         # Update everything
         pygame.display.update()
