@@ -1,5 +1,6 @@
 # python imports
 import pygame
+from random import randint
 
 # local imports
 from player import Tank, Barrel
@@ -22,7 +23,7 @@ bullet = pygame.sprite.GroupSingle()
 
 # Group
 enemy_group = pygame.sprite.Group()
-enemy_group.add(Enemy())
+enemy_group.add(Enemy(w / 2, h / 2))
 
 # Player score
 score = 0
@@ -62,6 +63,10 @@ def main():
     # Score
     font = pygame.font.Font("freesansbold.ttf", 25)
 
+    # Timer for enemies
+    enemy_timer = pygame.USEREVENT + 2
+    pygame.time.set_timer(enemy_timer, 2500)
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -78,6 +83,12 @@ def main():
                     bullet_status = "cooldown"
                     bullet.add(Bullet(the_barrel.rect.x, the_barrel.rect.y))
                     bullet_ready = False
+
+            if event.type == enemy_timer:
+                # Spawn a new enemy
+                x = randint(40, w - 40)
+                y = randint(30, h / 2)
+                enemy_group.add(Enemy(x, y))
 
         # Game populates
         screen.fill("black")

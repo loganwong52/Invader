@@ -7,12 +7,12 @@ halfway = w / 2
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, x, y):
         super(Enemy, self).__init__()
 
         self.image = pygame.Surface((40, 30))
         self.image.fill("Red")
-        self.rect = self.image.get_rect(center=(w / 2, h / 2))
+        self.rect = self.image.get_rect(center=(x, y))
 
     def destroy(self):
         """
